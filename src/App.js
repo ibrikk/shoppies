@@ -56,8 +56,8 @@ const App = () => {
          ) : errorMessage ? (
           <div className="errorMessage">{errorMessage}</div>
         ) : (
-          movies?.map((movie, index) => (
-            <Movie key={`${index}-${movie.Title}`} movie={movie} />
+          movies?.map((movie, id) => (
+            <Movie key={`${id}-${movie.Title}`} movie={movie} />
           ))
         )}
       </div>

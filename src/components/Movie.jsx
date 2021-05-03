@@ -4,6 +4,9 @@ const defaultImage = "https://image.shutterstock.com/image-vector/no-image-avail
 
 
 const Movie = ({ movie }) => {
+
+
+
   const poster =
     movie.Poster === "N/A" ? defaultImage : movie.Poster;
   return (
@@ -17,6 +20,7 @@ const Movie = ({ movie }) => {
         />
       </div>
       <p>({movie.Year})</p>
+      <button type="submit">NOMINATE</button> 
     </div>
   );
 };
