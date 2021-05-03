@@ -3,21 +3,23 @@ import './App.css';
 import Header from './components/Header';
 import Movie from './components/Movie';
 import Search from './components/Search';
+import axios from 'axios';
 
 
 const App = () => {
-   const MOVIE_API_URL = `http://www.omdbapi.com/?i=tt3896198&apikey=80e5588b`; // you should replace this with yours
+   const MOVIE_API_URL = `http://www.omdbapi.com/?i=tt3896198&apikey=80e5588b`; 
    const [loading, setLoading] = useState(false);
    const [movies, setMovies] = useState([]);
    const [errorMessage, setErrorMessage] = useState(null);
    
   useEffect(() => {
-     fetch(MOVIE_API_URL)
-     .then(response => response.json())
+     axios
+     .get(MOVIE_API_URL)
+     .then(response => response.data)
      
-     .then(jsonResponse => {
-       console.log(jsonResponse)
-       setMovies(jsonResponse.Search);
+     .then(response => {
+       console.log(response)
+       setMovies(response.Search);
        setLoading(false);
       });
     }, [MOVIE_API_URL]);
@@ -27,14 +29,16 @@ const App = () => {
     setLoading(true);
     setErrorMessage(null);
 
-    fetch(`http://www.omdbapi.com/?s=${searchValue}&apikey=80e5588b`)
-      .then(response => response.json())
-      .then(jsonResponse => {
-        if (jsonResponse.Response) {
-          setMovies(jsonResponse.Search);
+    axios
+    .get(`http://www.omdbapi.com/?s=${searchValue}&apikey=80e5588b`)
+      .then(response => response.data)
+      .then(response => {
+        console.log(response)
+        if (response.Response) {
+          setMovies(response.Search);
           setLoading(false);
         } else {
-          setErrorMessage(jsonResponse.Error);
+          setErrorMessage(response.Error);
           setLoading(false);
         }
       });
