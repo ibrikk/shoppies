@@ -3,7 +3,8 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: rgb(149, 191, 71);
   height: 70px;
   display: flex;
   flex-direction: column;
@@ -28,6 +29,10 @@
 
 * {
   box-sizing: border-box;
+}
+
+.isDisabled {
+  color: red;
 }
 
 .movies {
@@ -55,11 +60,7 @@
   max-width: 25%;
 }
 
-.errorMessage {
-  margin: auto;
-  font-weight: bold;
-  color: rgb(161, 15, 15);
-}
+
 
 
 .search {
@@ -71,27 +72,10 @@
 }
 
 
-input[type="submit"] {
-  padding: 5px;
-  background-color: transparent;
-  color: black;
-  border: 1px solid black;
-  width: 80px;
-  margin-left: 5px;
-  cursor: pointer;
-}
 
 
-input[type="submit"]:hover {
-  background-color: #282c34;
-  color: antiquewhite;
-}
 
 
-.search > input[type="text"]{
-  width: 40%;
-  min-width: 170px;
-}
 
 @media screen and (min-width: 694px) and (max-width: 915px) {
   .movie {
