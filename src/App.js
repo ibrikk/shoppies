@@ -4,7 +4,8 @@ import Header from './components/Header';
 import Search from './components/Search';
 import axios from 'axios';
 import _ from 'lodash';
-import { Grid, Container } from '@material-ui/core';
+import { Grid, Container, Typography, CircularProgress, Button, } from '@material-ui/core';
+
 
 const App = () => {
   const MOVIE_API_URL = `http://www.omdbapi.com/?apikey=80e5588b`;
@@ -74,12 +75,11 @@ const App = () => {
   }
 
   return (
-    <div className='App'>
+    <Container  className='App'>
       <Header text='The Shoppies' />
       <Search search={search} />
 
       {/* Nominated Movies */}
-      <p className='App-intro'>Sharing a few of our favourite movies</p>
       <Container>
         <Grid
           container
@@ -88,47 +88,48 @@ const App = () => {
           alignItems='flex-start'
         >
           <Grid item>
+          <Typography className='movie-list'>See Our Library of Movies 🎥</Typography>
             {loading && !errorMessage ? (
-              <span>loading...</span>
+              <CircularProgress color='secondary'>...loading</CircularProgress>
             ) : errorMessage ? (
-              <div className='errorMessage'>{errorMessage}</div>
+              <Grid item className='errorMessage'>{errorMessage}</Grid>
             ) : (
               movies?.map((movie, id) => (
-                <div>
-                  <h2>{movie.Title}</h2>
-                  <div>
+                <Grid item>
+                  <Typography className='movie_title' variant='h4'>{movie.Title}</Typography>
+                  <Grid item>
                     <img
                       width='200'
                       alt={`The movie titled: ${movie.Title}`}
                       src={movie.Poster === 'N/A' ? defaultImage : movie.Poster}
                     />
-                  </div>
-                  <p>({movie.Year})</p>
-                  <button className={alreadyExists(movie.imdbID) !== -1 ? 'isDisabled' : ''} disabled={alreadyExists(movie.imdbID) !== -1} onClick={() => nominate(movie.imdbID)}>NOMINATE</button>
-                </div>
+                  </Grid>
+                  <Typography className='year' variant='subtitle1'>({movie.Year})</Typography>
+                  <Button variant='contained' size='medium' color='primary' className={alreadyExists(movie.imdbID) !== -1 ? 'isDisabled' : 'nom_btn'} disabled={alreadyExists(movie.imdbID) !== -1} onClick={() => nominate(movie.imdbID)}>NOMINATE</Button>
+                </Grid>
               ))
             )}
-          </Grid>
-          <Grid item>
-          Your Nominated List 🍿
+            </Grid>
+            <Grid item>
+            <Typography className='movie-list'>Your Nominated List 🍿</Typography>
           {nominations?.map(nom => (
-            <div>
-                  <h2>{nom.Title}</h2>
-                  <div>
+            <Grid item>
+            <Typography variant='h4' className='movie_title'>{nom.Title}</Typography>
+                  <Grid item>
                     <img
                       width='200'
                       alt={`The movie titled: ${nom.Title}`}
                       src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
                     />
-                  </div>
-                  <p>({nom.Year})</p>
-                  <button onClick={() => remove(nom.imdbID)}>REMOVE</button>
-                </div>
+                  </Grid>
+                  <Typography className='year'>({nom.Year})</Typography>
+                  <Button className='num_btn' variant='contained' size='medium' color='secondary' onClick={() => remove(nom.imdbID)}>REMOVE</Button>
+                </Grid>
           ))}
           </Grid>
         </Grid>
         </Container>
-    </div>
+    </Container>
   );
 };
 
