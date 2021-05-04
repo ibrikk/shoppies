@@ -4,7 +4,15 @@ import Header from './components/Header';
 import Search from './components/Search';
 import axios from 'axios';
 import _ from 'lodash';
-import { Grid, Container, Typography, CircularProgress, Button, } from '@material-ui/core';
+import {
+  Grid,
+  Container,
+  Typography,
+  CircularProgress,
+  Button,
+} from '@material-ui/core';
+
+
 
 
 const App = () => {
@@ -17,23 +25,11 @@ const App = () => {
   const defaultImage =
     'https://image.shutterstock.com/image-vector/no-image-available-sign-internet-600w-261719003.jpg';
 
-  // useEffect(() => {
-  //   axios
-  //     .get(MOVIE_API_URL)
-  //     .then((response) => response.data)
-
-  //     .then((response) => {
-  //       setMovies(response.Search);
-  //       setLoading(false);
-  //     });
-  // }, [MOVIE_API_URL]);
-
   const search = (searchValue) => {
     setLoading(true);
     setErrorMessage(null);
 
     axios
-      //.get(`http://www.omdbapi.com/?s=${searchValue}&apikey=80e5588b`)
       .get(MOVIE_API_URL + `&s=` + searchValue)
       .then((response) => response.data)
       .then((response) => {
@@ -57,25 +53,21 @@ const App = () => {
       for (const item of movies) {
         if (item.imdbID === id) {
           let a = _.cloneDeep(nominations);
-          a.push(item)
+          a.push(item);
           setNominations(a);
         }
       }
     }
   };
 
-  const remove = id=> {
-  
-
-    
-      let a = _.cloneDeep(nominations);
-      a = a.filter(item => item.imdbID !== id);
-      setNominations(a);
-    
-  }
+  const remove = (id) => {
+    let a = _.cloneDeep(nominations);
+    a = a.filter((item) => item.imdbID !== id);
+    setNominations(a);
+  };
 
   return (
-    <Container  className='App'>
+    <Container className='App'>
       <Header text='The Shoppies' />
       <Search search={search} />
 
@@ -87,16 +79,22 @@ const App = () => {
           justify='space-evenly'
           alignItems='flex-start'
         >
-          <Grid item>
-          <Typography className='movie-list'>See Our Library of Movies 🎥</Typography>
+          <Grid item className='search_result'>
+            <Typography className='movie-list'>
+              See Our Library of Movies 🎥
+            </Typography>
             {loading && !errorMessage ? (
-              <CircularProgress color='secondary'>...loading</CircularProgress>
+              <CircularProgress className='spinner' color='secondary'>...loading</CircularProgress>
             ) : errorMessage ? (
-              <Grid item className='errorMessage'>{errorMessage}</Grid>
+              <Grid item className='errorMessage'>
+                {errorMessage}
+              </Grid>
             ) : (
               movies?.map((movie, id) => (
                 <Grid item>
-                  <Typography className='movie_title' variant='h4'>{movie.Title}</Typography>
+                  <Typography className='movie_title' variant='h4'>
+                    {movie.Title}
+                  </Typography>
                   <Grid item>
                     <img
                       width='200'
@@ -104,31 +102,58 @@ const App = () => {
                       src={movie.Poster === 'N/A' ? defaultImage : movie.Poster}
                     />
                   </Grid>
-                  <Typography className='year' variant='subtitle1'>({movie.Year})</Typography>
-                  <Button variant='contained' size='medium' color='primary' className={alreadyExists(movie.imdbID) !== -1 ? 'isDisabled' : 'nom_btn'} disabled={alreadyExists(movie.imdbID) !== -1} onClick={() => nominate(movie.imdbID)}>NOMINATE</Button>
+                  <Typography className='year' variant='subtitle1'>
+                    ({movie.Year})
+                  </Typography>
+                  <Button
+                    variant='contained'
+                    size='medium'
+                    color='primary'
+                    className={
+                      alreadyExists(movie.imdbID) !== -1
+                        ? 'isDisabled'
+                        : 'nom_btn'
+                    }
+                    disabled={alreadyExists(movie.imdbID) !== -1}
+                    onClick={() => nominate(movie.imdbID)}
+                  >
+                    NOMINATE
+                  </Button>
                 </Grid>
               ))
             )}
-            </Grid>
-            <Grid item>
-            <Typography className='movie-list'>Your Nominated List 🍿</Typography>
-          {nominations?.map(nom => (
-            <Grid item>
-            <Typography variant='h4' className='movie_title'>{nom.Title}</Typography>
-                  <Grid item>
-                    <img
-                      width='200'
-                      alt={`The movie titled: ${nom.Title}`}
-                      src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
-                    />
-                  </Grid>
-                  <Typography className='year'>({nom.Year})</Typography>
-                  <Button className='num_btn' variant='contained' size='medium' color='secondary' onClick={() => remove(nom.imdbID)}>REMOVE</Button>
+          </Grid>
+          <Grid item>
+            <Typography className='movie-list'>
+              Your Nominated List 🍿
+            </Typography>
+            {nominations?.map((nom) => (
+              <Grid item>
+                <Typography variant='h4' className='movie_title'>
+                  {nom.Title}
+                </Typography>
+                <Grid item>
+                  <img
+                    width='200'
+                    alt={`The movie titled: ${nom.Title}`}
+                    src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
+                  />
                 </Grid>
-          ))}
+                <Typography className='year'>({nom.Year})</Typography>
+                <Button
+                  className='nom_btn'
+                  variant='contained'
+                  size='medium'
+                  color='secondary'
+                  onClick={() => remove(nom.imdbID)}
+                >
+                  REMOVE
+                </Button>
+              </Grid>
+            ))}
           </Grid>
         </Grid>
-        </Container>
+      </Container>
     </Container>
   );
 };

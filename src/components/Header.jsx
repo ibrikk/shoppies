@@ -1,10 +1,13 @@
-import React from "react";
+import React from 'react';
+import { Typography, Toolbar, AppBar } from '@material-ui/core';
 
 const Header = (props) => {
   return (
-    <header className="App-header">
-      <h2>{props.text}</h2>
-    </header>
+    <AppBar>
+      <Toolbar variant='dense' className='App-toolbar'>
+        <Typography variant='h3'>{props.text}</Typography>
+      </Toolbar>
+    </AppBar>
   );
 };
 
