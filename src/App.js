@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Search from './components/Search';
 import axios from 'axios';
 import _ from 'lodash';
+import Banner from 'react-js-banner';
 import {
   Grid,
   Container,
@@ -68,7 +69,6 @@ const App = () => {
       <Header text='The Shoppies' />
       <Search search={search} />
 
-      {/* Nominated Movies */}
       <Container>
         <Grid
           container
@@ -126,6 +126,8 @@ const App = () => {
             <Typography className='movie-list'>
               Your Nominated List 🍿
             </Typography>
+            {nominations.length > 4 && <Banner title="😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!" 
+             />}
             {nominations?.map((nom) => (
               <Grid item>
                 <Typography variant='h4' className='movie_title'>
