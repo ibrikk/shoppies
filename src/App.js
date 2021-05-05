@@ -11,6 +11,8 @@ import {
   Typography,
   CircularProgress,
   Button,
+  TableCell,
+  TableRow,
 } from '@material-ui/core';
 
 const App = () => {
@@ -22,6 +24,8 @@ const App = () => {
 
   const defaultImage =
     'https://image.shutterstock.com/image-vector/no-image-available-sign-internet-600w-261719003.jpg';
+
+  // Table
 
   const search = (searchValue) => {
     setLoading(true);
@@ -91,33 +95,39 @@ const App = () => {
             ) : (
               movies?.map((movie, id) => (
                 <Grid item>
-                  <Typography className='movie_title' variant='h4'>
-                    {movie.Title}
-                  </Typography>
-                  <Grid item>
-                    <img
-                      width='200'
-                      alt={`The movie titled: ${movie.Title}`}
-                      src={movie.Poster === 'N/A' ? defaultImage : movie.Poster}
-                    />
-                  </Grid>
-                  <Typography className='year' variant='subtitle1'>
-                    ({movie.Year})
-                  </Typography>
-                  <Button
-                    variant='contained'
-                    size='medium'
-                    color='primary'
-                    className={
-                      alreadyExists(movie.imdbID) !== -1
-                        ? 'isDisabled'
-                        : 'nom_btn'
-                    }
-                    disabled={alreadyExists(movie.imdbID) !== -1}
-                    onClick={() => nominate(movie.imdbID)}
-                  >
-                    NOMINATE
-                  </Button>
+                  <TableRow key={id}>
+                    <TableCell component='th' scope='row'>
+                      <Typography className='movie_title' variant='h4'>
+                        {movie.Title}
+                      </Typography>
+                      <Grid item>
+                        <img
+                          width='200'
+                          alt={`The movie titled: ${movie.Title}`}
+                          src={
+                            movie.Poster === 'N/A' ? defaultImage : movie.Poster
+                          }
+                        />
+                      </Grid>
+                      <Typography className='year' variant='subtitle1'>
+                        ({movie.Year})
+                      </Typography>
+                      <Button
+                        variant='contained'
+                        size='medium'
+                        color='primary'
+                        className={
+                          alreadyExists(movie.imdbID) !== -1
+                            ? 'isDisabled'
+                            : 'nom_btn'
+                        }
+                        disabled={alreadyExists(movie.imdbID) !== -1}
+                        onClick={() => nominate(movie.imdbID)}
+                      >
+                        NOMINATE
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                 </Grid>
               ))
             )}
@@ -126,8 +136,9 @@ const App = () => {
             <Typography className='movie-list'>
               Your Nominated List 🍿
             </Typography>
-            {nominations.length > 4 && <Banner title="😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!" 
-             />}
+            {nominations.length > 4 && (
+              <Banner title='😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!' />
+            )}
             {nominations?.map((nom) => (
               <Grid item>
                 <Typography variant='h4' className='movie_title'>
