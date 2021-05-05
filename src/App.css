@@ -57,8 +57,22 @@
 }
 
 .year {
-  padding: 1em;
+  padding-top: 2.2em;
 }
+
+.img_grid {
+  padding-bottom: 2em;
+}
+
+.nom_btn_container {
+  padding-left: 2.5em;
+}
+
+.rmv_btn_container {
+  padding-left: 3.5em;
+}
+
+
 
 .movie_title {
   padding-top: 1em;

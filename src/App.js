@@ -13,6 +13,8 @@ import {
   Button,
   TableCell,
   TableRow,
+  TableBody,
+  TableHead,
 } from '@material-ui/core';
 
 const App = () => {
@@ -95,39 +97,53 @@ const App = () => {
             ) : (
               movies?.map((movie, id) => (
                 <Grid item>
-                  <TableRow key={id}>
-                    <TableCell component='th' scope='row'>
-                      <Typography className='movie_title' variant='h4'>
-                        {movie.Title}
-                      </Typography>
-                      <Grid item>
-                        <img
-                          width='200'
-                          alt={`The movie titled: ${movie.Title}`}
-                          src={
-                            movie.Poster === 'N/A' ? defaultImage : movie.Poster
-                          }
-                        />
-                      </Grid>
-                      <Typography className='year' variant='subtitle1'>
-                        ({movie.Year})
-                      </Typography>
-                      <Button
-                        variant='contained'
-                        size='medium'
-                        color='primary'
-                        className={
-                          alreadyExists(movie.imdbID) !== -1
-                            ? 'isDisabled'
-                            : 'nom_btn'
-                        }
-                        disabled={alreadyExists(movie.imdbID) !== -1}
-                        onClick={() => nominate(movie.imdbID)}
-                      >
-                        NOMINATE
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <Typography className='movie_title' variant='h4'>
+                          {movie.Title}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Typography className='year' variant='subtitle1'>
+                          <strong>({movie.Year})</strong>
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow key={id}>
+                      <TableCell component='th' scope='row'>
+                        <Grid item className='img_grid'>
+                          <img
+                            width='200'
+                            alt={`The movie titled: ${movie.Title}`}
+                            src={
+                              movie.Poster === 'N/A'
+                                ? defaultImage
+                                : movie.Poster
+                            }
+                          />
+                        </Grid>
+                        <Grid item className='nom_btn_container'>
+                          <Button
+                            variant='contained'
+                            size='medium'
+                            color='primary'
+                            className={
+                              alreadyExists(movie.imdbID) !== -1
+                                ? 'isDisabled'
+                                : 'nom_btn'
+                            }
+                            disabled={alreadyExists(movie.imdbID) !== -1}
+                            onClick={() => nominate(movie.imdbID)}
+                          >
+                            NOMINATE
+                          </Button>
+                        </Grid>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
                 </Grid>
               ))
             )}
@@ -141,26 +157,46 @@ const App = () => {
             )}
             {nominations?.map((nom) => (
               <Grid item>
-                <Typography variant='h4' className='movie_title'>
-                  {nom.Title}
-                </Typography>
-                <Grid item>
-                  <img
-                    width='200'
-                    alt={`The movie titled: ${nom.Title}`}
-                    src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
-                  />
-                </Grid>
-                <Typography className='year'>({nom.Year})</Typography>
-                <Button
-                  className='nom_btn'
-                  variant='contained'
-                  size='medium'
-                  color='secondary'
-                  onClick={() => remove(nom.imdbID)}
-                >
-                  REMOVE
-                </Button>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Typography variant='h4' className='movie_title'>
+                        {nom.Title}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align='right'>
+                      <Typography className='year' variant='subtitle1'>
+                        <strong>({nom.Year})</strong>
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow key={nom}>
+                    <TableCell component='th' scope='row'>
+                      <Grid item>
+                        <img
+                          item
+                          className='img_grid'
+                          width='200'
+                          alt={`The movie titled: ${nom.Title}`}
+                          src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
+                        />
+                      </Grid>
+                      <Grid item className='rmv_btn_container'>
+                        <Button
+                          className='nom_btn'
+                          variant='contained'
+                          size='medium'
+                          color='secondary'
+                          onClick={() => remove(nom.imdbID)}
+                        >
+                          REMOVE
+                        </Button>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
               </Grid>
             ))}
           </Grid>
