@@ -1,8 +1,5 @@
-import React, { useState } from "react";
-import {
-  Button,
-  TextField,
-} from '@material-ui/core';
+import React, { useState } from 'react';
+import { Button, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const StyledButton = withStyles({
@@ -20,26 +17,37 @@ const StyledButton = withStyles({
 })(Button);
 
 const Search = (props) => {
-  const [searchValue, setSearchValue] = useState("");
-  
+  const [searchValue, setSearchValue] = useState('');
+
   const handleSearchInputChanges = (e) => {
     setSearchValue(e.target.value);
-  }
-
+  };
 
   const callSearchFunction = (e) => {
     e.preventDefault();
     props.search(searchValue);
-  }
+  };
 
   return (
-      <form className="search">
-      <TextField size='small' id="standard-basic" variant="outlined" value={searchValue}
-      onChange={handleSearchInputChanges}
-      type="text" />
-        <StyledButton  variant='contained' size='small' onClick={callSearchFunction} type="submit">SEARCH</StyledButton>
-      </form>
-    );
-}
+    <form className='search'>
+      <TextField
+        size='small'
+        id='standard-basic'
+        variant='outlined'
+        value={searchValue}
+        onChange={handleSearchInputChanges}
+        type='text'
+      />
+      <StyledButton
+        variant='contained'
+        size='small'
+        onClick={callSearchFunction}
+        type='submit'
+      >
+        SEARCH
+      </StyledButton>
+    </form>
+  );
+};
 
 export default Search;

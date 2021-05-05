@@ -12,9 +12,6 @@ import {
   Button,
 } from '@material-ui/core';
 
-
-
-
 const App = () => {
   const MOVIE_API_URL = `http://www.omdbapi.com/?apikey=80e5588b`;
   const [loading, setLoading] = useState(false);
@@ -38,7 +35,7 @@ const App = () => {
           setMovies(response.Search);
           setLoading(false);
         } else {
-          setErrorMessage('Sorry, we have an issue in the backend!Error');
+          setErrorMessage('Sorry, something went wrong!');
           setLoading(false);
         }
       });
@@ -84,7 +81,9 @@ const App = () => {
               See Our Library of Movies 🎥
             </Typography>
             {loading && !errorMessage ? (
-              <CircularProgress className='spinner' color='secondary'>...loading</CircularProgress>
+              <CircularProgress className='spinner' color='secondary'>
+                ...loading
+              </CircularProgress>
             ) : errorMessage ? (
               <Grid item className='errorMessage'>
                 {errorMessage}
