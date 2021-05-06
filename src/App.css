@@ -1,3 +1,5 @@
+
+
 .App {
   text-align: center;
 }
@@ -31,16 +33,6 @@
   box-sizing: border-box;
 }
 
-.isDisabled {
-  color: red;
-}
-
-.movies {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-}
-
 .add-movies {
   text-align: center;
 }
@@ -51,56 +43,23 @@
   margin: 0 10px 30px 10px;
 }
 
-.movie {
-  padding: 5px 25px 10px 25px;
-  max-width: 25%;
-}
-
-.year {
-  padding-top: 2.2em;
-}
-
-.img_grid {
-  padding-bottom: 2em;
-}
-
-.nom_btn_container {
-  padding-left: 2.5em;
-}
-
-.rmv_btn_container {
-  padding-left: 3.5em;
-}
-
-
-
-.movie_title {
-  padding-top: 1em;
-}
-
 .search {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 7em;
+  padding-bottom: 2em;
 }
 
-@media screen and (min-width: 694px) and (max-width: 915px) {
-  .movie {
-    max-width: 33%;
-  }
+.left_grid {
+  margin-right: 2em;
 }
 
-@media screen and (min-width: 652px) and (max-width: 693px) {
-  .movie {
-    max-width: 50%;
-  }
+.right_grid {
+  margin-left: 2em;
 }
 
-@media screen and (max-width: 651px) {
-  .movie {
-    max-width: 100%;
-    margin: auto;
-  }
+.MuiSnackbarContent-root {
+  background: #ff9800 !important;
 }

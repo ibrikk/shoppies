@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect,  } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Search from './components/Search';
 import axios from 'axios';
 import _ from 'lodash';
-import Banner from 'react-js-banner';
 import {
   Grid,
   Container,
@@ -15,13 +14,18 @@ import {
   TableRow,
   TableBody,
   TableHead,
+  Table,
+  Snackbar,
+  SnackbarContent,
 } from '@material-ui/core';
+
 
 const App = () => {
   const MOVIE_API_URL = `http://www.omdbapi.com/?apikey=80e5588b`;
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [openSnackBar, setOpenSnackbar] = useState(false);
   const [nominations, setNominations] = useState([]);
 
   const defaultImage =
@@ -40,6 +44,7 @@ const App = () => {
         console.log(response);
         if (response.Response === 'True') {
           setMovies(response.Search);
+
           setLoading(false);
         } else {
           setErrorMessage('Sorry, something went wrong!');
@@ -52,13 +57,26 @@ const App = () => {
     return nominations.findIndex((item) => item.imdbID === id);
   };
 
+
+  const updateState = (newNominations, shouldUpdateLocalStorage = true) => {
+    if (shouldUpdateLocalStorage) {
+      window.localStorage.setItem('noms', JSON.stringify(newNominations));
+    }
+    setNominations(newNominations);
+    if (newNominations.length > 4) {
+      setOpenSnackbar(true);
+    } else {
+      setOpenSnackbar(false);
+    }
+  };
+
   const nominate = (id) => {
     if (alreadyExists(id) === -1) {
       for (const item of movies) {
         if (item.imdbID === id) {
           let a = _.cloneDeep(nominations);
           a.push(item);
-          setNominations(a);
+          updateState(a);
         }
       }
     }
@@ -67,65 +85,73 @@ const App = () => {
   const remove = (id) => {
     let a = _.cloneDeep(nominations);
     a = a.filter((item) => item.imdbID !== id);
-    setNominations(a);
+   updateState(a);
   };
+
+  
+
+  useEffect(() => {
+    const initialNominations = JSON.parse(window.localStorage.getItem('noms'));
+    console.log(initialNominations);
+    // to Obj
+    if (Array.isArray(initialNominations) && initialNominations.length) {
+      updateState(initialNominations, false);
+    }
+  }, []);
+
+  
 
   return (
     <Container className='App'>
+    <Snackbar open={openSnackBar}>
+    <SnackbarContent>😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!</SnackbarContent>
+  </Snackbar>
       <Header text='The Shoppies' />
       <Search search={search} />
 
-      <Container>
-        <Grid
-          container
-          direction='row'
-          justify='space-evenly'
-          alignItems='flex-start'
-        >
-          <Grid item className='search_result'>
-            <Typography className='movie-list'>
-              See Our Library of Movies 🎥
-            </Typography>
-            {loading && !errorMessage ? (
-              <CircularProgress className='spinner' color='secondary'>
-                ...loading
-              </CircularProgress>
-            ) : errorMessage ? (
-              <Grid item className='errorMessage'>
-                {errorMessage}
-              </Grid>
-            ) : (
-              movies?.map((movie, id) => (
-                <Grid item>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>
-                        <Typography className='movie_title' variant='h4'>
-                          {movie.Title}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align='right'>
-                        <Typography className='year' variant='subtitle1'>
-                          <strong>({movie.Year})</strong>
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow key={id}>
-                      <TableCell component='th' scope='row'>
-                        <Grid item className='img_grid'>
-                          <img
-                            width='200'
-                            alt={`The movie titled: ${movie.Title}`}
-                            src={
-                              movie.Poster === 'N/A'
-                                ? defaultImage
-                                : movie.Poster
-                            }
-                          />
+      
+      <Grid
+        container
+        direction='row'
+        justify='space-evenly'
+        alignItems='flex-start'
+        spacing={2}
+      >
+        <Grid item className='left_grid' xs={12} md={6} >
+          <Typography className='movie-list'>
+            See Our Library of Movies 🎬
+          </Typography>
+          {loading && !errorMessage ? (
+            <CircularProgress className='spinner' color='secondary'>
+              ...loading
+            </CircularProgress>
+          ) : errorMessage ? (
+            <Grid item className='errorMessage'>
+              {errorMessage}
+            </Grid>
+          ) : (
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Title</TableCell>
+                  <TableCell>Year</TableCell>
+                  <TableCell>Poster</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {movies?.map((movie, id) => (
+                  <TableRow key={id}>
+                    <TableCell>
+                      <Grid
+                        container
+                        direction='column'
+                        justify='center'
+                        alignItems='flex-start'
+                      >
+                        <Grid item>
+                          <Typography variant='h4'>{movie.Title}</Typography>
                         </Grid>
-                        <Grid item className='nom_btn_container'>
+                        <Grid item>
                           <Button
                             variant='contained'
                             size='medium'
@@ -141,49 +167,54 @@ const App = () => {
                             NOMINATE
                           </Button>
                         </Grid>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Grid>
-              ))
-            )}
-          </Grid>
-          <Grid item>
-            <Typography className='movie-list'>
-              Your Nominated List 🍿
-            </Typography>
-            {nominations.length > 4 && (
-              <Banner title='😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!' />
-            )}
-            {nominations?.map((nom) => (
-              <Grid item>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>
-                      <Typography variant='h4' className='movie_title'>
-                        {nom.Title}
-                      </Typography>
+                      </Grid>
                     </TableCell>
                     <TableCell align='right'>
-                      <Typography className='year' variant='subtitle1'>
-                        <strong>({nom.Year})</strong>
+                      <Typography variant='subtitle1'>
+                        <strong>({movie.Year})</strong>
                       </Typography>
                     </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow key={nom}>
                     <TableCell component='th' scope='row'>
+                      <img
+                        width='200'
+                        alt={`The movie titled: ${movie.Title}`}
+                        src={
+                          movie.Poster === 'N/A' ? defaultImage : movie.Poster
+                        }
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </Grid>
+        <Grid item xs={12} md={6} className='right_grid'>
+          <Typography className='movie-list'>
+            <strong>My Nominated List 🍿</strong>
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Title</TableCell>
+                <TableCell>Year</TableCell>
+                <TableCell>Poster</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {nominations?.map((nom) => (
+                <TableRow key={nom}>
+                  <TableCell>
+                    <Grid
+                      container
+                      direction='column'
+                      justify='center'
+                      alignItems='flex-start'
+                    >
                       <Grid item>
-                        <img
-                          item
-                          className='img_grid'
-                          width='200'
-                          alt={`The movie titled: ${nom.Title}`}
-                          src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
-                        />
+                        <Typography variant='h4'>{nom.Title}</Typography>
                       </Grid>
-                      <Grid item className='rmv_btn_container'>
+                      <Grid item>
                         <Button
                           className='nom_btn'
                           variant='contained'
@@ -194,14 +225,29 @@ const App = () => {
                           REMOVE
                         </Button>
                       </Grid>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Grid>
-            ))}
-          </Grid>
+                    </Grid>
+                  </TableCell>
+
+                  <TableCell align='right'>
+                    <Typography variant='subtitle1'>
+                      <strong>({nom.Year})</strong>
+                    </Typography>
+                  </TableCell>
+                  <TableCell component='th' scope='row'>
+                    <img
+                      item
+                      className='img_grid'
+                      width='200'
+                      alt={`The movie titled: ${nom.Title}`}
+                      src={nom.Poster === 'N/A' ? defaultImage : nom.Poster}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </Grid>
-      </Container>
+      </Grid>
     </Container>
   );
 };
