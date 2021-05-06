@@ -1,4 +1,4 @@
-import React, { useState, useEffect,  } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Search from './components/Search';
@@ -18,7 +18,6 @@ import {
   Snackbar,
 } from '@material-ui/core';
 
-
 const App = () => {
   const MOVIE_API_URL = `http://www.omdbapi.com/?apikey=80e5588b`;
   const [loading, setLoading] = useState(false);
@@ -30,8 +29,7 @@ const App = () => {
   const defaultImage =
     'https://image.shutterstock.com/image-vector/no-image-available-sign-internet-600w-261719003.jpg';
 
-  // Table
-
+  // Search for a list of movies and send a GET request
   const search = (searchValue) => {
     setLoading(true);
     setErrorMessage(null);
@@ -43,7 +41,6 @@ const App = () => {
         console.log(response);
         if (response.Response === 'True') {
           setMovies(response.Search);
-
           setLoading(false);
         } else {
           setErrorMessage('Sorry, something went wrong!');
@@ -52,16 +49,19 @@ const App = () => {
       });
   };
 
+  // Validate if the nomination already exists
   const alreadyExists = (id) => {
     return nominations.findIndex((item) => item.imdbID === id);
   };
 
-
+  // Checks if the local storage should be updated, useful if the app grow
   const updateState = (newNominations, shouldUpdateLocalStorage = true) => {
     if (shouldUpdateLocalStorage) {
+      // Pass the data in a string format
       window.localStorage.setItem('noms', JSON.stringify(newNominations));
     }
     setNominations(newNominations);
+    // Display a banner if a user has 5 or more nominations
     if (newNominations.length > 4) {
       setOpenSnackbar(true);
     } else {
@@ -69,46 +69,43 @@ const App = () => {
     }
   };
 
+  // Add a nomination
   const nominate = (id) => {
     if (alreadyExists(id) === -1) {
       for (const item of movies) {
         if (item.imdbID === id) {
-          let a = _.cloneDeep(nominations);
-          a.push(item);
-          updateState(a);
+          let newNominations = _.cloneDeep(nominations);
+          newNominations.push(item);
+          updateState(newNominations);
         }
       }
     }
   };
 
+  // Remove a nomination
   const remove = (id) => {
-    let a = _.cloneDeep(nominations);
-    a = a.filter((item) => item.imdbID !== id);
-   updateState(a);
+    let newNominations = _.cloneDeep(nominations);
+    newNominations = newNominations.filter((item) => item.imdbID !== id);
+    updateState(newNominations);
   };
 
-  
-
   useEffect(() => {
+    // Parsing from string to an Object
     const initialNominations = JSON.parse(window.localStorage.getItem('noms'));
-    console.log(initialNominations);
-    // to Obj
     if (Array.isArray(initialNominations) && initialNominations.length) {
       updateState(initialNominations, false);
     }
   }, []);
 
-  
-
   return (
     <Container className='App'>
-    <Snackbar open={openSnackBar} message=' 😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!'>
-   
-  </Snackbar>
+      <Snackbar
+        open={openSnackBar}
+        message=' 😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!'
+      ></Snackbar>
       <Header text='The Shoppies' />
       <Search search={search} />
 
-      
       <Grid
         container
         direction='row'
@@ -116,7 +113,7 @@ const App = () => {
         alignItems='flex-start'
         spacing={2}
       >
-        <Grid item className='left_grid' xs={12} md={6} >
+        <Grid item className='left_grid' xs={12} md={6}>
           <Typography className='movie-list'>
             See Our Library of Movies 🎬
           </Typography>

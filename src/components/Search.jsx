@@ -19,6 +19,7 @@ const StyledButton = withStyles({
 const Search = (props) => {
   const [searchValue, setSearchValue] = useState('');
 
+  // Saves changes in the input to the state
   const handleSearchInputChanges = (e) => {
     setSearchValue(e.target.value);
   };

@@ -1,9 +1,12 @@
-
-
 .App {
   text-align: center;
 }
 
+* {
+  box-sizing: border-box;
+}
+
+/* Styling the Header component */
 .App-toolbar {
   background-color: rgb(149, 191, 71);
   height: 70px;
@@ -17,6 +20,17 @@
   cursor: pointer;
 }
 
+.search {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 7em;
+  padding-bottom: 2em;
+}
+
+/* End of styling the Header component */
+
 .spinner {
   height: 80px;
   margin: auto;
@@ -27,12 +41,6 @@
   padding: 2.5em;
 }
 
-/* new css for movie component */
-
-* {
-  box-sizing: border-box;
-}
-
 .add-movies {
   text-align: center;
 }
@@ -41,15 +49,6 @@
   font-size: 16px;
   padding: 8px;
   margin: 0 10px 30px 10px;
-}
-
-.search {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 7em;
-  padding-bottom: 2em;
 }
 
 .left_grid {
