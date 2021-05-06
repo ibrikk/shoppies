@@ -16,7 +16,6 @@ import {
   TableHead,
   Table,
   Snackbar,
-  SnackbarContent,
 } from '@material-ui/core';
 
 
@@ -103,8 +102,8 @@ const App = () => {
 
   return (
     <Container className='App'>
-    <Snackbar open={openSnackBar}>
-    <SnackbarContent>😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!</SnackbarContent>
+    <Snackbar open={openSnackBar} message=' 😵‍💫 😵‍💫 😵‍💫 Whoa...looks like you already have more than 4 nominations!'>
+   
   </Snackbar>
       <Header text='The Shoppies' />
       <Search search={search} />
