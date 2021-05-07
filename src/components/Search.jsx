@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
-import { Button, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { React, useState } from "react";
+import {
+  makeStyles,
+  Grid,
+  Paper,
+  InputBase,
+  IconButton,
+} from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
 
-const StyledButton = withStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    background: 'black',
-    borderRadius: 3,
-    border: 0,
-    color: 'white',
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgb(149, 191, 71)',
+    padding: "2px 4px",
+    display: "flex",
+    width: 400,
   },
-  label: {
-    textTransform: 'capitalize',
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
   },
-})(Button);
+  iconButton: {
+    padding: 10,
+  },
+  container: {
+    display: "flex",
+    "justify-content": "center",
+    "margin-top": "7em",
+  },
+}));
 
 const Search = (props) => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
+  const classes = useStyles();
 
   // Saves changes in the input to the state
   const handleSearchInputChanges = (e) => {
@@ -30,24 +43,33 @@ const Search = (props) => {
   };
 
   return (
-    <form className='search'>
-      <TextField
-        size='small'
-        id='standard-basic'
-        variant='outlined'
-        value={searchValue}
-        onChange={handleSearchInputChanges}
-        type='text'
-      />
-      <StyledButton
-        variant='contained'
-        size='small'
-        onClick={callSearchFunction}
-        type='submit'
+    <div className={classes.container}>
+      <Grid
+        container
+        direction="row"
+        justify="space-evenly"
+        alignItems="flex-start"
       >
-        SEARCH
-      </StyledButton>
-    </form>
+        <Grid item className="left_grid">
+          <Paper component="div" elevation={3} className={classes.root}>
+            <InputBase
+              className={classes.input}
+              placeholder="Search A Movie"
+              inputProps={{ "aria-label": "search a movie" }}
+              onChange={handleSearchInputChanges}
+            />
+            <IconButton
+              className={classes.iconButton}
+              type="submit"
+              aria-label="search"
+              onClick={callSearchFunction}
+            >
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 

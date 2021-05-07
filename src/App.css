@@ -8,11 +8,10 @@
 
 /* Styling the Header component */
 .App-toolbar {
-  background-color: rgb(149, 191, 71);
+  background-color: #90caf9;
   height: 70px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
@@ -33,11 +32,14 @@
 
 .spinner {
   height: 80px;
-  margin: auto;
+  margin: 2em 0;
+}
+
+.error {
+  margin: 2em 0 !important;
 }
 
 .movie-list {
-  font-size: large;
   padding: 2.5em;
 }
 
@@ -55,10 +57,27 @@
   margin-right: 2em;
 }
 
-.right_grid {
-  margin-left: 2em;
+@media(max-width: 1280px) {
+  .right_grid {
+    margin-top: 4em !important;
+  }
+}
+@media(min-width: 1279px) {
+  .right_grid {
+    margin-left: 2em;
+    margin-top: 8em !important;
+  }
 }
 
 .MuiSnackbarContent-root {
   background: #ff9800 !important;
+}
+
+.nomContainer {
+  margin-top: 2em;
+  padding: 5px;
+}
+.empty-nom-list {
+  margin-top: 1em !important;
+  margin-bottom: 1em !important;
 }
