@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 
 const App = () => {
-  const MOVIE_API_URL = `http://www.omdbapi.com/?apikey=80e5588b`;
+  const MOVIE_API_URL = `https://www.omdbapi.com/?apikey=80e5588b`;
   const [loading, setLoading] = useState(false);
   const [movies, setMovies] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
