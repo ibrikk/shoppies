@@ -233,6 +233,7 @@ const App = () => {
           )}
         </Grid>
       </Grid>
+      <a href='https://github.com/ibrikk/shoppies'>See the Source Code on Github </a>
     </Container>
   );
 };
