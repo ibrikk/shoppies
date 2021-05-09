@@ -2,7 +2,7 @@
 
 Shoppies is an IMDB Web-app built with React that lets you render movies using the omdb API. 
 
-![Screenshot](https://user-images.githubusercontent.com/59522575/117356828-339f6e00-ae82-11eb-87c0-99248dea0440.gif)
+![Screenshot](https://user-images.githubusercontent.com/59522575/117553620-a0506f00-b020-11eb-812d-e8a566481353.gif)
 
 
 
